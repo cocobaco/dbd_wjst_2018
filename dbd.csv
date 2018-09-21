@@ -1,0 +1,15 @@
+sample,treat_time,Total aerobic plate count,Total yeast & mold count,Coliform (MPN/g),E. coli  (MPN/g)
+licorice,0,4.79+0.45a,2.61+0.12a,"460-1,100",< 3
+licorice,5,3.62+0.11b,2.18+1.35bc,38-150,< 3
+licorice,10,3.59+0.58b,2.09+0.02b,23,< 3
+licorice,15,3.85+0.16b,2.19+0.12b,43,< 3
+licorice,20,3.10+0.14b,2.26+0.04b,9.2-27,< 3
+licorice,25,3.03+0.47b,2.16+0.23b,9.2-11,< 3
+licorice,30,3.04+0.06b,1.88+0.03c,3.6-11,< 3
+sappan tree,0,3.48+0.11a,2.53+0.28a,3.6,< 3
+sappan tree,5,2.85+0.15b,1.84+0.12b,< 3,< 3
+sappan tree,10,2.89+0.16b,1.75+0.08b,< 3,< 3
+sappan tree,15,2.77+0.10b,1.69+0.09b,< 3,< 3
+sappan tree,20,2.83+0.18b,1.80+0.14b,< 3,< 3
+sappan tree,25,2.83+0.18b,1.77+0.12b,< 3,< 3
+sappan tree,30,2.81+0.05b,1.59+0.16b,< 3,< 3
