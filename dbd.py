@@ -11,7 +11,18 @@ Created on Fri Sep 21 07:24:41 2018
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from datetime import datetime
 
+
+###############
+SAVE_FIG = True
+###############
+
+# get time string (for file saving)
+now = datetime.now()
+time_str = now.strftime('%Y%m%d-%H%M')
+
+# get data
 df = pd.read_csv('dbd.csv')
 print(df)
 #df = df.transpose()
@@ -41,6 +52,7 @@ for char in bad_chars:
 
 df.drop(['Total aerobic plate count', 'Total yeast & mold count'], axis=1, inplace=True)
 
+# clean up column names
 df.rename(columns={'Coliform (MPN/g)': 'coliform', 
                    'E. coli  (MPN/g)': 'e.coli'}, inplace=True)
 df.loc[:, 'coliform'] = df['coliform'].replace('< 3', '0')
@@ -50,6 +62,7 @@ df.loc[:, 'coliform_min'] = [x.split('-')[0] if '-' in x else x for x in df['col
 df.loc[:, 'coliform_max'] = [x.split('-')[1] if '-' in x else x for x in df['coliform']]
 df.drop('coliform', axis=1, inplace=True)
 
+# convert to correct data types
 print(df.dtypes)
 df['aerobic_count'] = df['aerobic_count'].astype(float)
 df['aerobic_err'] = df['aerobic_err'].astype(float)
@@ -99,16 +112,43 @@ g = sns.barplot(data=df, x='treat_time', y='yeast_mold_count', hue='sample')
 plt.xlabel('treatment time')
 plt.ylabel('yeast and mold count')
 
+
+# ------- Figures for paper --------
+
 plt.figure()
 g = sns.lmplot(data=df, x='treat_time', y='aerobic_count', 
-               fit_reg=True, ci=95, hue='sample')
-plt.xlabel('treatment time')
-plt.ylabel('aerobic count')
+               fit_reg=True, ci=95, aspect=1, hue='sample', 
+               legend=False)
+ax = g.axes.flat[0]
+ax.set_xlabel('treatment time (min)', fontsize=14)
+ax.set_ylabel('aerobic plate count (log CFU/g)', fontsize=14)
+#xticklabels = df['treat_time'].unique()
+xticklabels = ax.get_xticklabels()
+yticklabels = ax.get_yticklabels()
+ax.set_xticklabels(xticklabels, fontsize=14)
+ax.set_yticklabels(yticklabels, fontsize=14)
+ax.legend(fontsize=14)
+#plt.setp(g.axes.flat.get_legend().get_texts(), fontsize=14)
+#plt.setp(g.axes.flat.get_legend().get_title(), fontsize=14)
+if SAVE_FIG:
+    outFile = ''.join(['fig_', 'apc', '_', time_str, '.png'])
+    g.savefig(outFile, dpi=400)
+
 
 plt.figure()
 g = sns.lmplot(data=df, x='treat_time', y='yeast_mold_count', 
-               fit_reg=True, ci=95, hue='sample')
-plt.xlabel('treatment time')
-plt.ylabel('yeast and mold count')
+               fit_reg=True, ci=95, aspect=1, hue='sample', 
+               legend=False)
+ax = g.axes.flat[0]
+ax.set_xlabel('treatment time (min)', fontsize=14)
+ax.set_ylabel('yeast and mold count (log CFU/g)', fontsize=14)
+xticklabels = ax.get_xticklabels()
+yticklabels = ax.get_yticklabels()
+ax.set_xticklabels(xticklabels, fontsize=14)
+ax.set_yticklabels(yticklabels, fontsize=14)
+ax.legend(fontsize=14)
+if SAVE_FIG:
+    outFile = ''.join(['fig_', 'ymc', '_', time_str, '.png'])
+    g.savefig(outFile, dpi=400)
 
 plt.show()
